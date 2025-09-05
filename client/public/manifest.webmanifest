@@ -1,0 +1,9 @@
+{
+  "name": "Library Shelving Loadouts",
+  "short_name": "Shelving",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d4d92",
+  "theme_color": "#0d4d92",
+  "icons": []
+}

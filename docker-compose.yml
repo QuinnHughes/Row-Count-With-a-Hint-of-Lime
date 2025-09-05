@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    command: npm run dev
+    ports:
+      - "5173:5173"  # Vite dev
+      - "8080:8080"  # API
+    volumes:
+      - ./:/workspace
+      - /workspace/node_modules
+      - /workspace/server/node_modules
+      - /workspace/client/node_modules
+    environment:
+      - NODE_ENV=development
+    working_dir: /workspace
