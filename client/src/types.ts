@@ -25,3 +25,74 @@ export interface Loadouts {
   cartSize?: number;
   carts: { cart: number; rows: LoadoutUnit[] }[];
 }
+
+export interface LoadoutSnapshotCart {
+  cart: number;
+  rows: LoadoutUnit[];
+  shelved: boolean;
+}
+
+export interface LoadoutSnapshot {
+  id: number;
+  date: string;
+  initials: string;
+  cart_size: number;
+  created_at: string;
+  carts: LoadoutSnapshotCart[];
+  group?: string;
+}
+
+export interface OverviewGroupRow {
+  group: string;
+  todayRows: number;
+  prevRows: number;
+  delta: number;
+}
+
+export interface OverviewResponse {
+  date: string;
+  prevDate: string;
+  groups: OverviewGroupRow[];
+}
+
+export interface CartRecord {
+  id: number;
+  date: string;
+  group: string;
+  initials: string;
+  rows: number;
+  shelved: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DailyStatsResponse {
+  date: string;
+  groups: {
+    group: string;
+    totalRows: number;
+    cartCount: number;
+    shelvedRows: number;
+    pendingRows: number;
+    shelvedCarts: number;
+    pendingCarts: number;
+  }[];
+  totalRows: number;
+  totalCarts: number;
+}
+
+export interface PeriodAnalytics {
+  period: 'week'|'month'|'year';
+  startDate: string;
+  endDate: string;
+  groups: {
+    group: string;
+    entryRows: number;
+    cartRows: number;
+    cartCount: number;
+    shelvedCarts: number;
+    pendingCarts: number;
+  }[];
+  totals: { entryRows: number; cartRows: number; cartCount: number; shelvedCarts: number; pendingCarts: number; };
+  dailySeries: { date: string; entryRows: number; cartRows: number; }[];
+}

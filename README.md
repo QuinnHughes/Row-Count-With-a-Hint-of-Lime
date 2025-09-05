@@ -4,16 +4,18 @@ Cross-platform (desktop & mobile via PWA) web application to track daily shelvin
 
 ## Core Concepts
 
-Sections (location/type groupings):
+Locations (plain names only):
 
-1. A–GV (3rd floor, overflow trucks)
-2. H–HX (2nd floor, overflow trucks)
-3. J–NX (basement movable shelves)
-4. P–Z (movable shelves near study room)
-5. A–Z (white stripes carts & shelves)
-6. Documents (movable shelves after bound journals)
-7. CHYAC/Reference (N10 wall, special rows, capped at 3 rows per day)
-8. Oversize (2nd floor rough shelving area, capped at 2 rows per day)
+1. Third Floor
+2. Second Floor
+3. South Basement J-NX
+4. North Basement
+5. New One
+6. Movables
+7. Bound Journals
+8. Documents
+9. Special (capped at 3 rows per day)
+10. Oversize (capped at 2 rows per day)
 
 An entry = (date, rows) for a section on a given day.
 
@@ -23,7 +25,7 @@ Loadouts = virtual carts each holding up to 6 row units. Rows are allocated in d
 
 - Frontend: React + TypeScript + Vite (PWA-ready, responsive for mobile & desktop; installable)
 - State: Minimal client state (Zustand) + server persistence
-- Backend: Express + SQLite (better-sqlite3)
+- Backend: Express + TypeScript (JSON file persistence for now)
 - Validation: zod
 - Container: Single Docker image (multi-stage) builds client then serves via Node/Express
 
@@ -51,7 +53,7 @@ Then open: http://localhost:8080 (served static bundle + API)
 
 GET /api/sections -> list sections with today's and recent entries
 
-POST /api/entries { sectionId, date, rows } -> add/update (enforces caps for CHYAC/Reference & Oversize)
+POST /api/entries { sectionId, date, rows } -> add/update (enforces caps for Special & Oversize)
 
 GET /api/loadouts?date=YYYY-MM-DD -> derived carts for a date
 
