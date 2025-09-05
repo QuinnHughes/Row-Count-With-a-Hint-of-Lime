@@ -1,16 +1,23 @@
 version: '3.8'
 services:
-  app:
-    build: .
-    command: npm run dev
+  server:
+    image: node:20-alpine
+    working_dir: /workspace/server
+    command: sh -c "npm install -w server && npm run dev -w server"
     ports:
-      - "5173:5173"  # Vite dev
-      - "8080:8080"  # API
-    volumes:
-      - ./:/workspace
-      - /workspace/node_modules
-      - /workspace/server/node_modules
-      - /workspace/client/node_modules
+      - "8080:8080"
     environment:
       - NODE_ENV=development
-    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+
+  client:
+    image: node:20-alpine
+    working_dir: /workspace/client
+    command: sh -c "npm install -w client && npm run dev -w client"
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/workspace

@@ -1,0 +1,286 @@
+{
+  "sections": [
+    {
+      "id": 1,
+      "code": "Third Floor",
+      "name": "Third Floor",
+      "group": "Third Floor",
+      "daily_cap": null,
+      "order_index": 1
+    },
+    {
+      "id": 2,
+      "code": "Second Floor",
+      "name": "Second Floor",
+      "group": "Second Floor",
+      "daily_cap": null,
+      "order_index": 2
+    },
+    {
+      "id": 3,
+      "code": "South Basement J-NX",
+      "name": "South Basement J-NX",
+      "group": "South Basement J-NX",
+      "daily_cap": null,
+      "order_index": 3
+    },
+    {
+      "id": 4,
+      "code": "North Basement",
+      "name": "North Basement",
+      "group": "North Basement",
+      "daily_cap": null,
+      "order_index": 4
+    },
+    {
+      "id": 5,
+      "code": "CHYAC",
+      "name": "CHYAC",
+      "group": "CHYAC",
+      "daily_cap": null,
+      "order_index": 5
+    },
+    {
+      "id": 6,
+      "code": "Movables",
+      "name": "Movables",
+      "group": "Movables",
+      "daily_cap": null,
+      "order_index": 6
+    },
+    {
+      "id": 7,
+      "code": "Bound Journals",
+      "name": "Bound Journals",
+      "group": "Bound Journals",
+      "daily_cap": null,
+      "order_index": 7
+    },
+    {
+      "id": 8,
+      "code": "Documents",
+      "name": "Documents",
+      "group": "Documents",
+      "daily_cap": null,
+      "order_index": 8
+    },
+    {
+      "id": 9,
+      "code": "Elec Media",
+      "name": "Elec Media",
+      "group": "Elec Media",
+      "daily_cap": 3,
+      "order_index": 9
+    },
+    {
+      "id": 10,
+      "code": "Oversize",
+      "name": "Oversize",
+      "group": "Oversize",
+      "daily_cap": 2,
+      "order_index": 10
+    }
+  ],
+  "entries": [
+    {
+      "id": 1,
+      "section_id": 1,
+      "date": "2025-09-05",
+      "rows": 3,
+      "created_at": "2025-09-05T19:37:24.002Z",
+      "updated_at": "2025-09-05T19:37:26.605Z"
+    },
+    {
+      "id": 2,
+      "section_id": 2,
+      "date": "2025-09-05",
+      "rows": 0,
+      "created_at": "2025-09-05T19:38:02.164Z",
+      "updated_at": "2025-09-05T19:38:02.164Z"
+    },
+    {
+      "id": 3,
+      "section_id": 6,
+      "date": "2025-09-05",
+      "rows": 0,
+      "created_at": "2025-09-05T19:39:26.889Z",
+      "updated_at": "2025-09-05T19:39:26.889Z"
+    },
+    {
+      "id": 4,
+      "section_id": 4,
+      "date": "2025-09-05",
+      "rows": 2,
+      "created_at": "2025-09-05T19:40:23.850Z",
+      "updated_at": "2025-09-05T19:40:23.850Z"
+    },
+    {
+      "id": 5,
+      "section_id": 3,
+      "date": "2025-09-05",
+      "rows": 7,
+      "created_at": "2025-09-05T19:41:30.704Z",
+      "updated_at": "2025-09-05T19:41:30.704Z"
+    },
+    {
+      "id": 6,
+      "section_id": 7,
+      "date": "2025-09-05",
+      "rows": 4,
+      "created_at": "2025-09-05T19:41:56.484Z",
+      "updated_at": "2025-09-05T19:41:56.484Z"
+    },
+    {
+      "id": 7,
+      "section_id": 10,
+      "date": "2025-09-05",
+      "rows": 0,
+      "created_at": "2025-09-05T19:42:11.543Z",
+      "updated_at": "2025-09-05T19:42:11.543Z"
+    },
+    {
+      "id": 8,
+      "section_id": 9,
+      "date": "2025-09-05",
+      "rows": 3,
+      "created_at": "2025-09-05T19:42:36.377Z",
+      "updated_at": "2025-09-05T19:42:36.377Z"
+    }
+  ],
+  "snapshots": [],
+  "carts": [
+    {
+      "id": 1,
+      "date": "2025-09-05",
+      "group": "Third Floor",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:37:21.613Z",
+      "updated_at": "2025-09-05T19:37:21.613Z"
+    },
+    {
+      "id": 2,
+      "date": "2025-09-05",
+      "group": "Second Floor",
+      "initials": "QH",
+      "rows": 2,
+      "shelved": false,
+      "created_at": "2025-09-05T19:38:00.431Z",
+      "updated_at": "2025-09-05T19:38:00.431Z"
+    },
+    {
+      "id": 3,
+      "date": "2025-09-05",
+      "group": "Movables",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:39:24.478Z",
+      "updated_at": "2025-09-05T19:39:24.478Z"
+    },
+    {
+      "id": 4,
+      "date": "2025-09-05",
+      "group": "North Basement",
+      "initials": "QH",
+      "rows": 5,
+      "shelved": false,
+      "created_at": "2025-09-05T19:39:50.994Z",
+      "updated_at": "2025-09-05T19:39:50.994Z"
+    },
+    {
+      "id": 5,
+      "date": "2025-09-05",
+      "group": "North Basement",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:39:56.527Z",
+      "updated_at": "2025-09-05T19:39:56.527Z"
+    },
+    {
+      "id": 6,
+      "date": "2025-09-05",
+      "group": "North Basement",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:40:09.274Z",
+      "updated_at": "2025-09-05T19:40:09.274Z"
+    },
+    {
+      "id": 7,
+      "date": "2025-09-05",
+      "group": "South Basement J-NX",
+      "initials": "QH",
+      "rows": 5,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:15.320Z",
+      "updated_at": "2025-09-05T19:41:15.320Z"
+    },
+    {
+      "id": 8,
+      "date": "2025-09-05",
+      "group": "South Basement J-NX",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:19.838Z",
+      "updated_at": "2025-09-05T19:41:19.838Z"
+    },
+    {
+      "id": 9,
+      "date": "2025-09-05",
+      "group": "South Basement J-NX",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:25.834Z",
+      "updated_at": "2025-09-05T19:41:25.834Z"
+    },
+    {
+      "id": 10,
+      "date": "2025-09-05",
+      "group": "Bound Journals",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:45.573Z",
+      "updated_at": "2025-09-05T19:46:18.352Z"
+    },
+    {
+      "id": 11,
+      "date": "2025-09-05",
+      "group": "Bound Journals",
+      "initials": "QH",
+      "rows": 6,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:49.608Z",
+      "updated_at": "2025-09-05T19:41:49.608Z"
+    },
+    {
+      "id": 12,
+      "date": "2025-09-05",
+      "group": "Bound Journals",
+      "initials": "QH",
+      "rows": 4,
+      "shelved": false,
+      "created_at": "2025-09-05T19:41:53.675Z",
+      "updated_at": "2025-09-05T19:41:53.675Z"
+    },
+    {
+      "id": 13,
+      "date": "2025-09-05",
+      "group": "Oversize",
+      "initials": "QH",
+      "rows": 1,
+      "shelved": false,
+      "created_at": "2025-09-05T19:42:09.978Z",
+      "updated_at": "2025-09-05T19:42:09.978Z"
+    }
+  ],
+  "_entrySeq": 9,
+  "_snapshotSeq": 1,
+  "_cartSeq": 14
+}

@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install deps (workspace)
+        run: npm install --include-workspace-root
+      - name: Type check server
+        run: npm run build -w server -- --noEmit
+      - name: Type check client
+        run: npm run build -w client -- --noEmit
+      - name: Build Docker image
+        run: docker build -t shelving-app:ci .
+      - name: Save dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-dist
+          path: client/dist

@@ -18,20 +18,30 @@ let data: DataShape | null = null;
 
 function load(): DataShape {
   if (data) return data;
-  if (fs.existsSync(DATA_FILE)) {
-    data = fs.readJSONSync(DATA_FILE) as DataShape;
-  } else {
-    data = {
-      sections: [],
-      entries: [],
-      snapshots: [],
-      carts: [],
-      _entrySeq: 1,
-      _snapshotSeq: 1,
-      _cartSeq: 1
-    } as DataShape;
+  let raw: any = {};
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      raw = fs.readJSONSync(DATA_FILE) || {};
+    }
+  } catch {
+    raw = {};
   }
-  if (data.sections.length === 0) seedSections();
+  // Ensure full shape with sane defaults even if file is empty/partial
+  const shaped: DataShape = {
+    sections: Array.isArray(raw.sections) ? raw.sections : [],
+    entries: Array.isArray(raw.entries) ? raw.entries : [],
+    // @ts-ignore snapshots exists in DataShape in this repo
+    snapshots: Array.isArray(raw.snapshots) ? raw.snapshots : [],
+    carts: Array.isArray(raw.carts) ? raw.carts : [],
+    _entrySeq: Number.isInteger(raw._entrySeq) ? raw._entrySeq : 1,
+    // @ts-ignore _snapshotSeq exists in DataShape in this repo
+    _snapshotSeq: Number.isInteger(raw._snapshotSeq) ? raw._snapshotSeq : 1,
+    _cartSeq: Number.isInteger(raw._cartSeq) ? raw._cartSeq : 1
+  } as DataShape;
+  data = shaped;
+  if (!Array.isArray(data.sections) || data.sections.length === 0) {
+    seedSections();
+  }
   persist();
   return data;
 }

@@ -49,6 +49,24 @@ docker run -p 8080:8080 shelving-app
 
 Then open: http://localhost:8080 (served static bundle + API)
 
+### Production (Compose)
+
+```powershell
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+### Backups
+
+Run the backup script (creates `backups/data-<timestamp>.json`):
+
+```powershell
+powershell -File scripts/backup-data.ps1
+```
+
+### Hardened Image
+
+The production stage runs as non-root `node` user and prunes dev dependencies. Health check hits `/api/health`.
+
 ## API Overview
 
 GET /api/sections -> list sections with today's and recent entries

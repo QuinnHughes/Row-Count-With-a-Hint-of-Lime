@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+    image: shelving-app:latest
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+    volumes:
+      - ./data.json:/app/data.json # persist JSON data file
+    restart: unless-stopped
