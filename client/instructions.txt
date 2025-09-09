@@ -1,0 +1,18 @@
+Naming of locations:
+What we want for the location names are the standard common names followed by the call number range. 
+-Third Floor A-GV
+-Second Floor H-HX
+-South Basement J-P
+-North Basement Q-Z
+-CHYAC
+-Elec Media
+-Bound Journals
+-Documents
+-Reference 
+-Oversize 
+The locations above should also follow the order that they are in above also.
+
+Existing Functionality:
+This is a list of a few functions that are currently existing but need some tweaks.
+-Carts should persist to the next day in the shelving workspace. And what I mean by this is when I go a day ahead I should see the previous days carts but not shelves. The reason for this is we can make it perpetual where we only need to update the change in shelving from the last day and then we will only need to update those changes the next day. 
+-With anayltics I would like to be able to see a bit easier how much was shelved by using information from previous days and carts to deduce what was shelved based on the changes regardless of how much new shelving came up.

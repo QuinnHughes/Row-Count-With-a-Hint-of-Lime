@@ -89,7 +89,9 @@
       "updated_at": "2025-09-05T18:48:06.095Z"
     }
   ],
-  "_entrySeq": 2,
+  "snapshots": [],
   "carts": [],
+  "_entrySeq": 2,
+  "_snapshotSeq": 1,
   "_cartSeq": 1
 }

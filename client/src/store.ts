@@ -27,11 +27,12 @@ interface AppState {
   loadCarts: () => Promise<void>;
   addCart: (group: string, initials: string, rows: number) => Promise<void>;
   setCartShelvedState: (id: number, shelved: boolean) => Promise<void>;
+  setCartRows: (id: number, rows: number) => Promise<void>;
   removeCart: (id: number) => Promise<void>;
   dailyCartStats: import('./types').DailyStatsResponse | null;
   loadDailyCartStats: () => Promise<void>;
   analytics: import('./types').PeriodAnalytics | null;
-  loadAnalytics: (period: 'week'|'month'|'year') => Promise<void>;
+  loadAnalytics: (period: 'week'|'month'|'year', dateOverride?: string) => Promise<void>;
   init: () => Promise<void>;
   setDate: (d: string) => void;
   setEntry: (sectionId: number, rows: number) => void;
@@ -112,6 +113,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     await get().loadCarts();
     await get().loadDailyCartStats();
   },
+  setCartRows: async (id, rows) => {
+    await updateCartRecord(id, { rows });
+    await get().loadCarts();
+    await get().loadDailyCartStats();
+  },
   removeCart: async (id) => {
     await deleteCartRecord(id);
     await get().loadCarts();
@@ -122,9 +128,10 @@ export const useAppStore = create<AppState>((set, get) => ({
     const stats = await fetchDailyCartStats(date);
     set({ dailyCartStats: stats });
   },
-  loadAnalytics: async (period) => {
+  loadAnalytics: async (period, dateOverride) => {
     const { date } = get();
-    const analytics = await fetchPeriodAnalytics(date, period);
+    const anchor = dateOverride || date;
+    const analytics = await fetchPeriodAnalytics(anchor, period);
     set({ analytics });
   },
   loadSnapshots: async () => {

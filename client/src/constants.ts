@@ -1,16 +1,37 @@
-// Plain English location names only (user request: remove call number ranges entirely)
+// Display labels with ranges where specified; codes/groups are canonical keys used by the server.
 export const GROUP_INFO: Record<string, { label: string; range?: string }> = {
-  'Third Floor': { label: 'Third Floor', range: 'A–GV' },
-  'Second Floor': { label: 'Second Floor', range: 'H–HX' },
-  'South Basement J-NX': { label: 'South Basement J-NX', range: 'J–NX' },
-  'North Basement': { label: 'North Basement', range: 'P–Z' },
-  'CHYAC': { label: 'CHYAC', range: 'P–QL' },
-  'Movables': { label: 'Movables', range: 'QL–Z' },
-  'Bound Journals': { label: 'Bound Journals', range: 'A–Z' },
-  'Documents': { label: 'Documents', range: 'Documents' },
-  'Elec Media': { label: 'Elec Media', range: 'CHYAC/Reference' },
-  'Oversize': { label: 'Oversize', range: 'Oversize' }
+  'Third Floor': { label: 'Third Floor', range: 'A-GV' },
+  'Second Floor': { label: 'Second Floor', range: 'H-HX' },
+  'South Basement': { label: 'South Basement', range: 'J-P' },
+  'North Basement': { label: 'North Basement', range: 'Q-Z' },
+  'CHYAC': { label: 'CHYAC' },
+  'Elec Media': { label: 'Elec Media' },
+  'Bound Journals': { label: 'Bound Journals' },
+  'Documents': { label: 'Documents' },
+  'Reference': { label: 'Reference' },
+  'Oversize': { label: 'Oversize' }
 };
+
+export const ORDERED_GROUPS: string[] = [
+  'Third Floor',
+  'Second Floor',
+  'South Basement',
+  'North Basement',
+  'CHYAC',
+  'Elec Media',
+  'Bound Journals',
+  'Documents',
+  'Reference',
+  'Oversize'
+];
+
+export function compareGroups(a: string, b: string): number {
+  const ia = ORDERED_GROUPS.indexOf(a);
+  const ib = ORDERED_GROUPS.indexOf(b);
+  const oa = ia === -1 ? 999 : ia;
+  const ob = ib === -1 ? 999 : ib;
+  return oa - ob;
+}
 
 export function displayGroup(group: string): string {
   const info = GROUP_INFO[group];

@@ -3,7 +3,7 @@
     {
       "id": 1,
       "code": "Third Floor",
-      "name": "Third Floor",
+      "name": "Third Floor A-GV",
       "group": "Third Floor",
       "daily_cap": null,
       "order_index": 1
@@ -11,23 +11,23 @@
     {
       "id": 2,
       "code": "Second Floor",
-      "name": "Second Floor",
+      "name": "Second Floor H-HX",
       "group": "Second Floor",
       "daily_cap": null,
       "order_index": 2
     },
     {
       "id": 3,
-      "code": "South Basement J-NX",
-      "name": "South Basement J-NX",
-      "group": "South Basement J-NX",
+      "code": "South Basement",
+      "name": "South Basement J-P",
+      "group": "South Basement",
       "daily_cap": null,
       "order_index": 3
     },
     {
       "id": 4,
       "code": "North Basement",
-      "name": "North Basement",
+      "name": "North Basement Q-Z",
       "group": "North Basement",
       "daily_cap": null,
       "order_index": 4
@@ -42,9 +42,9 @@
     },
     {
       "id": 6,
-      "code": "Movables",
-      "name": "Movables",
-      "group": "Movables",
+      "code": "Elec Media",
+      "name": "Elec Media",
+      "group": "Elec Media",
       "daily_cap": null,
       "order_index": 6
     },
@@ -65,11 +65,11 @@
       "order_index": 8
     },
     {
-      "id": 9,
-      "code": "Elec Media",
-      "name": "Elec Media",
-      "group": "Elec Media",
-      "daily_cap": 3,
+      "id": 11,
+      "code": "Reference",
+      "name": "Reference",
+      "group": "Reference",
+      "daily_cap": null,
       "order_index": 9
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "id": 8,
-      "section_id": 9,
+      "section_id": 6,
       "date": "2025-09-05",
       "rows": 3,
       "created_at": "2025-09-05T19:42:36.377Z",
@@ -149,16 +149,6 @@
   ],
   "snapshots": [],
   "carts": [
-    {
-      "id": 1,
-      "date": "2025-09-05",
-      "group": "Third Floor",
-      "initials": "QH",
-      "rows": 6,
-      "shelved": false,
-      "created_at": "2025-09-05T19:37:21.613Z",
-      "updated_at": "2025-09-05T19:37:21.613Z"
-    },
     {
       "id": 2,
       "date": "2025-09-05",

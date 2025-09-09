@@ -76,6 +76,9 @@ export interface DailyStatsResponse {
     pendingRows: number;
     shelvedCarts: number;
     pendingCarts: number;
+  prevEntryRows?: number;
+  todayEntryRows?: number;
+  deducedShelvedRows?: number;
   }[];
   totalRows: number;
   totalCarts: number;
@@ -93,6 +96,8 @@ export interface PeriodAnalytics {
     shelvedCarts: number;
     pendingCarts: number;
   }[];
-  totals: { entryRows: number; cartRows: number; cartCount: number; shelvedCarts: number; pendingCarts: number; };
+  totals: { entryRows: number; cartRows: number; cartCount: number; shelvedCarts: number; pendingCarts: number; totalRowsCombined: number; };
   dailySeries: { date: string; entryRows: number; cartRows: number; }[];
+  aggregatedSeries: { label: string; entryRows: number; cartRows: number; startDate?: string; endDate?: string; }[];
+  prevDay?: { date: string; entryRows: number; cartRows: number; totalRowsCombined: number; };
 }

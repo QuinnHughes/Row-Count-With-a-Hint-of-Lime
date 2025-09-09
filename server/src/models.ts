@@ -67,6 +67,10 @@ export interface DailyGroupStat {
   pendingRows: number;
   shelvedCarts: number;
   pendingCarts: number;
+  // Optional helpers for "how much was shelved today" analytics
+  prevEntryRows?: number;
+  todayEntryRows?: number;
+  deducedShelvedRows?: number;
 }
 
 export interface DailyStatsResponse {
@@ -74,4 +78,12 @@ export interface DailyStatsResponse {
   groups: DailyGroupStat[];
   totalRows: number;
   totalCarts: number;
+}
+
+export interface AggregatedSeriesPoint {
+  label: string; // e.g., 09-01, Week of 09-01, Jan
+  entryRows: number;
+  cartRows: number;
+  startDate?: string;
+  endDate?: string;
 }

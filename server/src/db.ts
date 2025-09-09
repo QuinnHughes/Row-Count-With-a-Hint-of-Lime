@@ -52,16 +52,17 @@ function persist() {
 }
 
 function seedSections() {
+  // Per instructions: names with standard common names and ranges in the label; groups/codes canonical.
   const base: Omit<Section, 'id'>[] = [
-    { code: 'Third Floor', name: 'Third Floor', group: 'Third Floor', daily_cap: null, order_index: 1 },
-    { code: 'Second Floor', name: 'Second Floor', group: 'Second Floor', daily_cap: null, order_index: 2 },
-    { code: 'South Basement J-NX', name: 'South Basement J-NX', group: 'South Basement J-NX', daily_cap: null, order_index: 3 },
-    { code: 'North Basement', name: 'North Basement', group: 'North Basement', daily_cap: null, order_index: 4 },
-  { code: 'CHYAC', name: 'CHYAC', group: 'CHYAC', daily_cap: null, order_index: 5 },
-    { code: 'Movables', name: 'Movables', group: 'Movables', daily_cap: null, order_index: 6 },
+    { code: 'Third Floor', name: 'Third Floor A-GV', group: 'Third Floor', daily_cap: null, order_index: 1 },
+    { code: 'Second Floor', name: 'Second Floor H-HX', group: 'Second Floor', daily_cap: null, order_index: 2 },
+    { code: 'South Basement', name: 'South Basement J-P', group: 'South Basement', daily_cap: null, order_index: 3 },
+    { code: 'North Basement', name: 'North Basement Q-Z', group: 'North Basement', daily_cap: null, order_index: 4 },
+    { code: 'CHYAC', name: 'CHYAC', group: 'CHYAC', daily_cap: null, order_index: 5 },
+    { code: 'Elec Media', name: 'Elec Media', group: 'Elec Media', daily_cap: 3, order_index: 6 },
     { code: 'Bound Journals', name: 'Bound Journals', group: 'Bound Journals', daily_cap: null, order_index: 7 },
     { code: 'Documents', name: 'Documents', group: 'Documents', daily_cap: null, order_index: 8 },
-  { code: 'Elec Media', name: 'Elec Media', group: 'Elec Media', daily_cap: 3, order_index: 9 },
+    { code: 'Reference', name: 'Reference', group: 'Reference', daily_cap: null, order_index: 9 },
     { code: 'Oversize', name: 'Oversize', group: 'Oversize', daily_cap: 2, order_index: 10 }
   ];
   let id = 1;
@@ -90,18 +91,18 @@ function migrateLegacyRangeSections() {
   const map: Record<string,string> = {
     'A–GV':'Third Floor',
     'H–HX':'Second Floor',
-    'J–NX':'South Basement J-NX',
+    'J–NX':'South Basement', // collapse to South Basement per new naming
     'P–Z':'North Basement',
-  'P–QL':'CHYAC',
-    'QL–Z':'Movables',
+    'P–QL':'CHYAC',
+    'QL–Z':'Elec Media', // move movables/QL–Z into Elec Media per new list
     'A–Z':'Bound Journals',
     'Docs':'Documents',
-  'CHYAC/Ref':'Elec Media',
+    'CHYAC/Ref':'Elec Media',
     'Oversize':'Oversize'
   };
 
   // Desired order
-  const order = ['Third Floor','Second Floor','South Basement J-NX','North Basement','CHYAC','Movables','Bound Journals','Documents','Elec Media','Oversize'];
+  const order = ['Third Floor','Second Floor','South Basement','North Basement','CHYAC','Elec Media','Bound Journals','Documents','Reference','Oversize'];
   const caps: Record<string, number|null> = { 'Elec Media':3, 'Oversize':2 } as any;
 
   // Aggregate entry rows by date + new section name
@@ -116,8 +117,20 @@ function migrateLegacyRangeSections() {
 
   // Rebuild sections list
   let idCounter = 1;
-  const newSections = order.map((name, idx) => ({
-    id: idCounter++, code: name, name, group: name, daily_cap: caps[name] ?? null, order_index: idx+1
+  const labelByCode: Record<string,string> = {
+    'Third Floor': 'Third Floor A-GV',
+    'Second Floor': 'Second Floor H-HX',
+    'South Basement': 'South Basement J-P',
+    'North Basement': 'North Basement Q-Z',
+    'CHYAC': 'CHYAC',
+    'Elec Media': 'Elec Media',
+    'Bound Journals': 'Bound Journals',
+    'Documents': 'Documents',
+    'Reference': 'Reference',
+    'Oversize': 'Oversize'
+  };
+  const newSections = order.map((code, idx) => ({
+    id: idCounter++, code, name: labelByCode[code] || code, group: code, daily_cap: caps[code] ?? null, order_index: idx+1
   }));
 
   // Build index for new section IDs
@@ -149,7 +162,59 @@ export function getSections(): Section[] {
   migrateLegacyRangeSections();
   // Migration: ensure group field
   let mutated = false;
-  d.sections.forEach(s => { if (!('group' in s) || !s.group) { s.group = s.code; mutated = true; } });
+  const order = ['Third Floor','Second Floor','South Basement','North Basement','CHYAC','Elec Media','Bound Journals','Documents','Reference','Oversize'];
+  const labelByCode: Record<string,string> = {
+    'Third Floor': 'Third Floor A-GV',
+    'Second Floor': 'Second Floor H-HX',
+    'South Basement': 'South Basement J-P',
+    'North Basement': 'North Basement Q-Z',
+    'CHYAC': 'CHYAC',
+    'Elec Media': 'Elec Media',
+    'Bound Journals': 'Bound Journals',
+    'Documents': 'Documents',
+    'Reference': 'Reference',
+    'Oversize': 'Oversize'
+  };
+  const caps: Record<string, number|null> = { 'Elec Media': 3, 'Oversize': 2 } as any;
+  d.sections.forEach(s => {
+    // Collapse older codes to new canonical codes
+    if (s.code === 'South Basement J-NX') { s.code = 'South Basement'; s.group = 'South Basement'; mutated = true; }
+    if (s.code === 'Movables') { s.code = 'Elec Media'; s.group = 'Elec Media'; mutated = true; }
+    if (!('group' in s) || !s.group) { s.group = s.code; mutated = true; }
+    // Normalize names/order to spec
+    if (labelByCode[s.code] && s.name !== labelByCode[s.code]) { s.name = labelByCode[s.code]; mutated = true; }
+  });
+  // Deduplicate by code: keep first by desired order, merge entries, delete extras
+  const firstByCode = new Map<string, Section>();
+  // stable sort by current order_index before dedup to keep earliest
+  d.sections.sort((a,b)=> a.order_index - b.order_index);
+  for (const s of [...d.sections]) {
+    const code = s.code;
+    const first = firstByCode.get(code);
+    if (!first) { firstByCode.set(code, s); continue; }
+    // Remap entries from duplicate id to first id
+    d.entries.forEach(e => { if (e.section_id === s.id) { e.section_id = first.id; mutated = true; } });
+    // Remove duplicate section
+    const idx = d.sections.findIndex(x => x.id === s.id);
+    if (idx !== -1) { d.sections.splice(idx,1); mutated = true; }
+  }
+  // Ensure all desired codes exist
+  const existingCodes = new Set(d.sections.map(s=>s.code));
+  let nextId = d.sections.reduce((m,s)=> Math.max(m, s.id), 0) + 1;
+  for (const code of order) {
+    if (!existingCodes.has(code)) {
+      d.sections.push({ id: nextId++, code, name: labelByCode[code] || code, group: code, daily_cap: caps[code] ?? null, order_index: 999 });
+      mutated = true;
+    }
+  }
+  // Ensure ordering matches spec; any unknowns go to end
+  d.sections.sort((a,b)=> {
+    const ia = order.indexOf(a.code); const ib = order.indexOf(b.code);
+    const oa = ia === -1 ? 999 + a.order_index : ia;
+    const ob = ib === -1 ? 999 + b.order_index : ib;
+    return oa - ob;
+  });
+  d.sections.forEach((s, idx)=> { if (s.order_index !== idx+1) { s.order_index = idx+1; mutated = true; } });
   if (mutated) persist();
   return [...d.sections].sort((a, b) => a.order_index - b.order_index);
 }
@@ -276,7 +341,13 @@ export function createCart(date: string, group: string, initials: string, rows: 
 export function listCarts(date?: string): CartRecord[] {
   ensureCartsArray();
   const d = load();
-  return d.carts.filter(c => !date || c.date === date).sort((a,b)=> a.created_at.localeCompare(b.created_at));
+  if (!date) return d.carts.slice().sort((a,b)=> a.created_at.localeCompare(b.created_at));
+  // Include previous day's carts as carry-over for context
+  const prev = new Date(date); prev.setDate(prev.getDate()-1);
+  const prevDate = prev.toISOString().slice(0,10);
+  return d.carts
+    .filter(c => c.date === date || c.date === prevDate)
+    .sort((a,b)=> a.created_at.localeCompare(b.created_at));
 }
 
 export function updateCart(id: number, patch: Partial<Pick<CartRecord,'rows'|'shelved'>>) {
@@ -304,7 +375,9 @@ export function deleteCart(id: number): boolean {
 export function dailyCartStats(date: string): DailyStatsResponse {
   ensureCartsArray();
   const d = load();
-  const carts = d.carts.filter(c => c.date === date);
+  const prev = new Date(date); prev.setDate(prev.getDate()-1);
+  const prevDate = prev.toISOString().slice(0,10);
+  const carts = d.carts.filter(c => c.date === date || c.date === prevDate);
   const byGroup = new Map<string, CartRecord[]>();
   carts.forEach(c => { if(!byGroup.has(c.group)) byGroup.set(c.group, []); byGroup.get(c.group)!.push(c); });
   const groups: DailyGroupStat[] = Array.from(byGroup.entries()).map(([group, list]) => {
@@ -314,7 +387,17 @@ export function dailyCartStats(date: string): DailyStatsResponse {
     const shelvedCarts = list.filter(c=>c.shelved).length;
     const pendingRows = totalRows - shelvedRows;
     const pendingCarts = cartCount - shelvedCarts;
-    return { group, totalRows, cartCount, shelvedRows, pendingRows, shelvedCarts, pendingCarts };
+    // Deduced shelved: use change in entry rows (today vs prev) plus carts marked shelved if needed
+    const sections = d.sections.filter(s => (s.group || 'Other') === group);
+    const prev = new Date(date); prev.setDate(prev.getDate()-1);
+    const prevDate = prev.toISOString().slice(0,10);
+    const sumEntries = (dt: string) => d.entries
+      .filter(e => e.date === dt && sections.some(s => s.id === e.section_id))
+      .reduce((s,e)=> s+e.rows, 0);
+    const prevEntryRows = sumEntries(prevDate);
+    const todayEntryRows = sumEntries(date);
+    const deducedShelvedRows = Math.max(0, todayEntryRows - prevEntryRows) || shelvedRows;
+    return { group, totalRows, cartCount, shelvedRows, pendingRows, shelvedCarts, pendingCarts, prevEntryRows, todayEntryRows, deducedShelvedRows };
   }).sort((a,b)=> a.group.localeCompare(b.group));
   return {
     date,
@@ -339,28 +422,35 @@ interface PeriodAnalytics {
   startDate: string;
   endDate: string;
   groups: PeriodGroupAgg[];
-  totals: { entryRows: number; cartRows: number; cartCount: number; shelvedCarts: number; pendingCarts: number; };
+  totals: { entryRows: number; cartRows: number; cartCount: number; shelvedCarts: number; pendingCarts: number; totalRowsCombined: number; };
   dailySeries: { date: string; entryRows: number; cartRows: number; }[];
+  aggregatedSeries: { label: string; entryRows: number; cartRows: number; startDate?: string; endDate?: string; }[];
+  prevDay?: { date: string; entryRows: number; cartRows: number; totalRowsCombined: number; };
 }
 
 function fmt(d: Date) { return d.toISOString().slice(0,10); }
 
-function startOfWeek(date: Date) {
-  const d = new Date(date); const day = d.getDay(); // 0=Sun
-  const diff = (day === 0 ? -6 : 1 - day); // shift to Monday
-  d.setDate(d.getDate() + diff);
-  d.setHours(0,0,0,0); return d;
+function startOfWeekUTC(date: Date) {
+  // Monday as start of week in UTC
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = d.getUTCDay(); // 0=Sun
+  const diff = (day === 0 ? -6 : 1 - day);
+  d.setUTCDate(d.getUTCDate() + diff);
+  d.setUTCHours(0,0,0,0);
+  return d;
 }
 
-function startOfMonth(date: Date) { return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)); }
-function startOfYear(date: Date) { return new Date(Date.UTC(date.getUTCFullYear(), 0, 1)); }
+function startOfMonthUTC(date: Date) { return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)); }
+function startOfYearUTC(date: Date) { return new Date(Date.UTC(date.getUTCFullYear(), 0, 1)); }
+
+function addDaysUTC(date: Date, days: number) { const d = new Date(date); d.setUTCDate(d.getUTCDate()+days); return d; }
 
 export function computePeriodAnalytics(dateStr: string, period: 'week'|'month'|'year'): PeriodAnalytics {
   const d = load();
   const target = new Date(dateStr + 'T00:00:00Z');
   let start: Date;
-  if (period === 'week') start = startOfWeek(target); else if (period === 'month') start = startOfMonth(target); else start = startOfYear(target);
-  const end = target; // inclusive to target date
+  if (period === 'week') start = startOfWeekUTC(target); else if (period === 'month') start = startOfMonthUTC(target); else start = startOfYearUTC(target);
+  const end = target; // inclusive
   const sectionsByGroup = d.sections.reduce<Record<string, Section[]>>((acc, s) => { const g = s.group || 'Other'; (acc[g] = acc[g] || []).push(s); return acc; }, {});
 
   // Pre-index entries by date+section
@@ -371,7 +461,7 @@ export function computePeriodAnalytics(dateStr: string, period: 'week'|'month'|'
 
   const dailySeries: { date: string; entryRows: number; cartRows: number; }[] = [];
   const groupAggMap = new Map<string, PeriodGroupAgg>();
-  for (let cursor = new Date(start); cursor <= end; cursor.setDate(cursor.getDate()+1)) {
+  for (let cursor = new Date(start); cursor <= end; cursor = addDaysUTC(cursor, 1)) {
     const ds = fmt(cursor);
     let dayEntryRows = 0; let dayCartRows = 0;
     Object.entries(sectionsByGroup).forEach(([group, secs]) => {
@@ -397,8 +487,52 @@ export function computePeriodAnalytics(dateStr: string, period: 'week'|'month'|'
   const groups = Array.from(groupAggMap.values()).sort((a,b)=> a.group.localeCompare(b.group));
   const totals = groups.reduce((acc,g)=> {
     acc.entryRows += g.entryRows; acc.cartRows += g.cartRows; acc.cartCount += g.cartCount; acc.shelvedCarts += g.shelvedCarts; acc.pendingCarts += g.pendingCarts; return acc;
-  }, { entryRows:0, cartRows:0, cartCount:0, shelvedCarts:0, pendingCarts:0 });
+  }, { entryRows:0, cartRows:0, cartCount:0, shelvedCarts:0, pendingCarts:0 } as any);
+  (totals as any).totalRowsCombined = totals.entryRows + totals.cartRows;
 
-  return { period, startDate: fmt(start), endDate: fmt(end), groups, totals, dailySeries };
+  // prevDay summary
+  const prev = addDaysUTC(start, -1);
+  const prevDate = fmt(prev);
+  let prevEntryRows = 0; let prevCartRows = 0;
+  dailySeries
+    .filter(p => p.date === prevDate) // likely none in series since series starts at start
+    .forEach(p => { prevEntryRows += p.entryRows; prevCartRows += p.cartRows; });
+  // recompute prev day from raw data (out of series bounds)
+  if (prevEntryRows === 0 && prevCartRows === 0) {
+    const entriesByDate = new Map<string, number>();
+    d.entries.forEach(e => { entriesByDate.set(e.date, (entriesByDate.get(e.date)||0) + e.rows); });
+    prevEntryRows = entriesByDate.get(prevDate) || 0;
+    prevCartRows = d.carts.filter(c => c.date === prevDate).reduce((s,c)=> s+c.rows, 0);
+  }
+  const prevDay = { date: prevDate, entryRows: prevEntryRows, cartRows: prevCartRows, totalRowsCombined: prevEntryRows + prevCartRows };
+
+  // aggregated series per granularity
+  const aggregatedSeries: { label: string; entryRows: number; cartRows: number; startDate?: string; endDate?: string; }[] = [];
+  if (period === 'week') {
+    // 7 daily buckets labelled MM-DD
+    aggregatedSeries.push(...dailySeries.map(p => ({ label: p.date.slice(5), entryRows: p.entryRows, cartRows: p.cartRows, startDate: p.date, endDate: p.date })));
+  } else if (period === 'month') {
+    // Group by week within month
+    const wk = new Map<string, { start: string; end: string; entryRows: number; cartRows: number }>();
+    dailySeries.forEach(p => {
+      const d0 = new Date(p.date + 'T00:00:00Z');
+      const wStart = startOfWeekUTC(d0);
+      const key = fmt(wStart);
+      const v = wk.get(key) || { start: key, end: key, entryRows: 0, cartRows: 0 };
+      v.entryRows += p.entryRows; v.cartRows += p.cartRows; v.end = p.date; wk.set(key, v);
+    });
+    Array.from(wk.values()).sort((a,b)=> a.start.localeCompare(b.start)).forEach(v => aggregatedSeries.push({ label: 'Week of ' + v.start.slice(5), entryRows: v.entryRows, cartRows: v.cartRows, startDate: v.start, endDate: v.end }));
+  } else {
+    // Year: group by month
+    const mo = new Map<string, { yyyymm: string; entryRows: number; cartRows: number }>();
+    dailySeries.forEach(p => {
+      const yyyymm = p.date.slice(0,7);
+      const v = mo.get(yyyymm) || { yyyymm, entryRows: 0, cartRows: 0 };
+      v.entryRows += p.entryRows; v.cartRows += p.cartRows; mo.set(yyyymm, v);
+    });
+    Array.from(mo.values()).sort((a,b)=> a.yyyymm.localeCompare(b.yyyymm)).forEach(v => aggregatedSeries.push({ label: v.yyyymm, entryRows: v.entryRows, cartRows: v.cartRows }));
+  }
+
+  return { period, startDate: fmt(start), endDate: fmt(end), groups, totals: totals as any, dailySeries, aggregatedSeries, prevDay };
 }
 
